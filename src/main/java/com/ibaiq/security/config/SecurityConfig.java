@@ -2,7 +2,7 @@ package com.ibaiq.security.config;
 
 import com.ibaiq.security.auth.*;
 import com.ibaiq.security.filter.TokenAuthenticationFilter;
-import com.ibaiq.security.filter.UrlAccessDecisionManager;
+import com.ibaiq.security.manager.UrlAccessDecisionManager;
 import com.ibaiq.utils.encryption.MD5PasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

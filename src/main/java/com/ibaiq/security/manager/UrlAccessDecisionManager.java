@@ -1,4 +1,4 @@
-package com.ibaiq.security.filter;
+package com.ibaiq.security.manager;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
