@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ibaiq.mapper.LoginLogMapper">
+
+    <select id="selectPages" resultType="com.ibaiq.entity.LoginLog">
+        SELECT * FROM login_log
+        <where>
+            <if test="log.ip != null and log.ip != ''">
+                AND ip = #{log.ip}
+            </if>
+            <if test="log.username != null and log.username != ''">
+                AND ip = #{log.username}
+            </if>
+            <if test="log.status != null">
+                AND ip = #{log.status}
+            </if>
+            <if test="log.beginTime != null">
+                AND login_time &gt;= #{log.beginTime}
+            </if>
+            <if test="log.endTime != null">
+                AND login_time &lt;= #{log.endTime}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <update id="clear">
+        TRUNCATE TABLE login_log
+    </update>
+
+</mapper>

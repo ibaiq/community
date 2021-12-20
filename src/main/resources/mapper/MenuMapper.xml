@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ibaiq.mapper.MenuMapper">
+
+    <select id="selectByIds" resultType="com.ibaiq.entity.Menu">
+        SELECT * FROM menu WHERE deleted = 0 AND id IN (-1
+        <foreach collection="ids" item="item" index="index" open="," separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getAll" resultType="com.ibaiq.entity.Menu">
+        SELECT *
+        FROM menu ${ew.customSqlSegment}
+    </select>
+
+</mapper>

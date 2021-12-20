@@ -1,0 +1,54 @@
+spring:
+  profiles:
+    active: dev
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+
+server:
+  error:
+    include-message: always
+
+  servlet:
+    encoding:
+      charset: UTF-8
+
+  max-http-header-size: 8192
+
+mybatis-plus:
+  type-aliases-package: com.ibaiq.entity
+  mapper-locations: classpath:mapper/*.xml
+
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: true
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    map-underscore-to-camel-case: true
+
+  global-config:
+    db-config:
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+
+logging:
+  charset:
+    console: UTF-8
+  level:
+    org.springframework.security: off
+
+ibaiq:
+  # 密钥
+  secret: (*^A*(&S^F*(&T&^%&@GIQLHE()!)IKSJDF)_!)^%&
+  # token请求头
+  token-header: Authorization
+  # token前缀
+  prefix: 'Bearer '
+  # token过期时间
+  expired: 1h
+  # 文件上传地址
+  # 头像地址
+  avatar: avatar/
+  # 图片地址
+  images: images/

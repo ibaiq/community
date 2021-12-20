@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ibaiq.mapper.RoleMapper">
+
+    <select id="selectUserRoles" resultType="com.ibaiq.entity.Role">
+        SELECT * FROM role WHERE id IN (-1
+        <foreach collection="roleIds" item="item" index="index" open="," separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectUnallocatedList" resultType="com.ibaiq.entity.Role">
+        SELECT *
+        FROM role
+        WHERE id NOT IN (SELECT role_id FROM role_user WHERE role_id IS NOT NULL GROUP BY role_id)
+    </select>
+
+</mapper>
