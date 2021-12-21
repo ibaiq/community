@@ -4,8 +4,10 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.ibaiq.common.constants.Constants;
 import com.ibaiq.common.enums.MessageEnum;
+import com.ibaiq.config.IbaiqConfig;
 import com.ibaiq.service.RoleService;
 import com.ibaiq.utils.RedisUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
@@ -24,10 +26,14 @@ import java.util.List;
  */
 @Component
 @SuppressWarnings("all")
+@Slf4j
 public class UrlAccessDecisionManager implements AccessDecisionManager {
 
     @Autowired
     private RedisUtils redis;
+    @Autowired
+    private IbaiqConfig ibaiq;
+
 
     /**
      * @param authentication: 当前登录用户的角色信息
@@ -40,6 +46,13 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
         FilterInvocation filterInvocation = (FilterInvocation) o;
         // 获取请求地址
         String url = filterInvocation.getRequestUrl();
+
+        for (String s : ibaiq.getPermitUrl()) {
+            if (url.startsWith(s)) {
+                return;
+            }
+        }
+
         // 请求地址是否是后台api
         if (url.contains(Constants.MANAGE)) {
             // 获取动态权限标识
@@ -58,17 +71,17 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
                     return;
                 }
             }
-            throw new AccessDeniedException(MessageEnum.PERMISSION_DENIED.getMsg());
         }
+        throw new AccessDeniedException(MessageEnum.PERMISSION_DENIED.getMsg());
     }
 
     @Override
     public boolean supports(ConfigAttribute configAttribute) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return false;
+        return true;
     }
 }

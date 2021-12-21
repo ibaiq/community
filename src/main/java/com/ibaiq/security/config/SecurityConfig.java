@@ -16,7 +16,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -78,28 +77,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
         // 关闭防火墙 允许跨域
         http.csrf().disable().cors();
-
-        registry.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-            @Override
-            public <O extends FilterSecurityInterceptor> O postProcess(O o) {
-                o.setAccessDecisionManager(urlAccessDecisionManager);
-                return o;
-            }
-        });
 
         // 设置无session状态不需要session
         http.sessionManagement()
                           .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // 配置权限
-        registry.antMatchers("/login", "/error", "/profile/**")
-                          .permitAll()
-                          // .antMatchers(Constants.MANAGE + "/**").hasAnyRole("SuperAdmin", "Admin")
-                          // 需要授权才能访问
-                          .anyRequest().authenticated();
+        http.authorizeRequests()
+                          .anyRequest()
+                          .authenticated()
+                          .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                              @Override
+                              public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                                  o.setAccessDecisionManager(urlAccessDecisionManager);
+                                  return o;
+                              }
+                          });
 
         // 配置登录
         http.formLogin()
