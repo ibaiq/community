@@ -59,4 +59,7 @@ public interface Constants {
 
     // 腾讯位置服务key
     String TENCENT_KEY = "GHIBZ-7CZKR-CZOWP-WVSNV-KSVGE-DKBRC";
+
+    // 匿名访问用户
+    String ANONYMOUS = "匿名用户";
 }

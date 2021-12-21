@@ -61,6 +61,9 @@ public abstract class BaseController {
     @Autowired
     protected OperLogService operLogService;
 
+    @Autowired
+    protected AccessLogService accessLogService;
+
 
     protected HttpServletRequest request;
 

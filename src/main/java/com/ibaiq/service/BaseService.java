@@ -72,6 +72,9 @@ public abstract class BaseService<M extends BaseMapper<T>, T> extends ServiceImp
     protected OperLogMapper operLogMapper;
 
     @Autowired
+    protected AccessLogMapper accessLogMapper;
+
+    @Autowired
     protected TokenUtils tokenUtils;
 
     @Autowired

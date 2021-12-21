@@ -54,6 +54,7 @@ ibaiq:
   images: images/
   # 放行url
   permitUrl:
+    - /
     - /login
     - /error
     - /profile
