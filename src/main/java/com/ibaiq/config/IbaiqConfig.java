@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * @author 十三
@@ -30,6 +31,8 @@ public class IbaiqConfig {
     private String avatar;
 
     private String images;
+
+    private List<String> permitUrl;
 
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
