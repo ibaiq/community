@@ -2,8 +2,6 @@ package com.ibaiq.controller;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.ibaiq.utils.ip.IpUtils;
-import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @author 十三
  */
 @RestController
-@Slf4j
 public class CommonController extends BaseController {
 
     /**
@@ -19,9 +16,9 @@ public class CommonController extends BaseController {
      */
     @PostMapping
     public void access() {
-        String access = request.getHeader("Access");
+        var access = request.getHeader("Access");
         if (ObjectUtil.isNotEmpty(access)) {
-            val ip = IpUtils.getIpAddress(request);
+            var ip = IpUtils.getIpAddress(request);
             accessLogService.save(access, ip);
         }
     }

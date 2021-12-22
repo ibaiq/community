@@ -28,17 +28,17 @@ public class AccessLogServiceImpl extends BaseService<AccessLogMapper, AccessLog
     public void save(String accessText, String ip) {
         String data_json = Base64.decodeStr(accessText);
         JSONObject data = JSONObject.parseObject(data_json);
-        val accessLog = new AccessLog();
+        var accessLog = new AccessLog();
         accessLog.setTime(new Date());
         accessLog.setIp(ip);
         accessLog.setUrl(data.getString("url"));
         accessLog.setLocation(AddressUtils.getCityInfo(ip));
-        val user = data.getJSONObject("user");
+        var user = data.getJSONObject("user");
         if (ObjectUtil.isNotEmpty(user)) {
             accessLog.setUsername(user.getString("username"));
         } else {
             try {
-                val username = tokenUtils.getUsername(data.getString("token"));
+                var username = tokenUtils.getUsername(data.getString("token"));
                 accessLog.setUsername(username);
             } catch (Exception e) {
                 accessLog.setUsername(Constants.ANONYMOUS);
