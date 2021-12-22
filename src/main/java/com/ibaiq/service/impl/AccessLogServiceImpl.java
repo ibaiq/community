@@ -26,27 +26,25 @@ public class AccessLogServiceImpl extends BaseService<AccessLogMapper, AccessLog
     @Override
     @Async("taskExecutor")
     public void save(String accessText, String ip) {
-        if (ObjectUtil.isNotEmpty(accessText)) {
-            String data_json = Base64.decodeStr(accessText);
-            JSONObject data = JSONObject.parseObject(data_json);
-            val accessLog = new AccessLog();
-            accessLog.setTime(new Date());
-            accessLog.setIp(ip);
-            accessLog.setUrl(data.getString("url"));
-            accessLog.setLocation(AddressUtils.getCityInfo(ip));
-            val user = data.getJSONObject("user");
-            if (ObjectUtil.isNotEmpty(user)) {
-                accessLog.setUsername(user.getString("username"));
-            } else {
-                try {
-                    val username = tokenUtils.getUsername(data.getString("token"));
-                    accessLog.setUsername(username);
-                } catch (Exception e) {
-                    accessLog.setUsername(Constants.ANONYMOUS);
-                }
+        String data_json = Base64.decodeStr(accessText);
+        JSONObject data = JSONObject.parseObject(data_json);
+        val accessLog = new AccessLog();
+        accessLog.setTime(new Date());
+        accessLog.setIp(ip);
+        accessLog.setUrl(data.getString("url"));
+        accessLog.setLocation(AddressUtils.getCityInfo(ip));
+        val user = data.getJSONObject("user");
+        if (ObjectUtil.isNotEmpty(user)) {
+            accessLog.setUsername(user.getString("username"));
+        } else {
+            try {
+                val username = tokenUtils.getUsername(data.getString("token"));
+                accessLog.setUsername(username);
+            } catch (Exception e) {
+                accessLog.setUsername(Constants.ANONYMOUS);
             }
-            redis.listSet("test", accessLog);
         }
+        redis.listSet("test", accessLog);
     }
 
 }

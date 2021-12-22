@@ -1,5 +1,6 @@
 package com.ibaiq.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.ibaiq.utils.ip.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -19,8 +20,10 @@ public class CommonController extends BaseController {
     @PostMapping
     public void access() {
         String access = request.getHeader("Access");
-        val ip = IpUtils.getIpAddress(request);
-        accessLogService.save(access, ip);
+        if (ObjectUtil.isNotEmpty(access)) {
+            val ip = IpUtils.getIpAddress(request);
+            accessLogService.save(access, ip);
+        }
     }
 
 }
