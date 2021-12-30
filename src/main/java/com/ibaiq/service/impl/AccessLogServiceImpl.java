@@ -9,12 +9,9 @@ import com.ibaiq.mapper.AccessLogMapper;
 import com.ibaiq.service.AccessLogService;
 import com.ibaiq.service.BaseService;
 import com.ibaiq.utils.ip.AddressUtils;
-import com.ibaiq.utils.ip.IpUtils;
-import lombok.val;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -44,7 +41,7 @@ public class AccessLogServiceImpl extends BaseService<AccessLogMapper, AccessLog
                 accessLog.setUsername(Constants.ANONYMOUS);
             }
         }
-        redis.listSet("test", accessLog);
+        redis.listSet(Constants.REDIS_KEY_ACCESS_LOG, accessLog);
     }
 
 }

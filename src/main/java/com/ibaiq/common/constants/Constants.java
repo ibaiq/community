@@ -35,6 +35,9 @@ public interface Constants {
     // security权限角色标识缓存key
     String REDIS_KEY_SECURITY_ROLES = "Security-Roles";
 
+    // 前端访问日志key
+    String REDIS_KEY_ACCESS_LOG = "Access-Log";
+
     // http请求
     String HTTP = "http://";
 
