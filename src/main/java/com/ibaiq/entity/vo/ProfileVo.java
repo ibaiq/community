@@ -34,7 +34,7 @@ public class ProfileVo implements Serializable {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<String> permissions;
 
-    private boolean admin;
+    private Boolean admin;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Boolean isSysAdmin;
