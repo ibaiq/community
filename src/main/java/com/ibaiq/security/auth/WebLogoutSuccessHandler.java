@@ -35,12 +35,15 @@ public class WebLogoutSuccessHandler extends JsonAuthentication implements Logou
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        String token = request.getHeader(ibaiq.getTokenHeader()).replace(ibaiq.getPrefix(), "");
-        Claims claims = this.token.claims(token);
-        String username = claims.get("username", String.class);
-        async.token_addBlacklist(claims.get("uuid", String.class));
-        AsyncManager.me().execute(AsyncFactory.asyncLoginLog(username, Constants.LOGOUT_SUCCESS, Constants.LOGOUT_SUCCESS_MSG, null, null, null));
-        writerJson(request, response, Message.success("注销成功"));
+        try {
+            String token = request.getHeader(ibaiq.getTokenHeader()).replace(ibaiq.getPrefix(), "");
+            Claims claims = this.token.claims(token);
+            String username = claims.get("username", String.class);
+            async.token_addBlacklist(claims.get("uuid", String.class));
+            AsyncManager.me().execute(AsyncFactory.asyncLoginLog(username, Constants.LOGOUT_SUCCESS, Constants.LOGOUT_SUCCESS_MSG, null, null, null));
+        } finally {
+            writerJson(request, response, Message.success("注销成功"));
+        }
     }
 
 }
