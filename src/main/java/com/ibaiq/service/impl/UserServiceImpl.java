@@ -239,12 +239,15 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
         if (StringUtils.isEmpty(oldPwd) || StringUtils.isEmpty(newPwd)) {
             throw new ParamIsNullException(MessageEnum.PARAM_IS_NULL);
         }
-        oldPwd = MD5Utils.getMD5(oldPwd);
+        String encrypt_oldPwd = MD5Utils.getMD5(oldPwd);
         String token = request.getHeader(ibaiq.getTokenHeader()).replace(ibaiq.getPrefix(), "");
         Integer userId = tokenUtils.getId(token);
         User user = userMapper.selectById(userId);
-        if (!oldPwd.equals(user.getPassword())) {
+        if (!encrypt_oldPwd.equals(user.getPassword())) {
             throw new BaseException(MessageEnum.USER_OLD_PWD_INCONSISTENT);
+        }
+        if (oldPwd.equals(newPwd)) {
+            throw new BaseException(MessageEnum.USER_NEW_OLD_PWD_CONSISTENT);
         }
         user.setPassword(newPwd);
         userMapper.updateById(infoModify(user, true));

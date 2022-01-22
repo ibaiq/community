@@ -46,6 +46,7 @@ public enum MessageEnum {
     USER_ILLEGAL_OPERATION(HttpServletResponse.SC_BAD_REQUEST, "非法操作"),
     USER_IS_ADMIN(HttpServletResponse.SC_BAD_REQUEST, "无法操作管理员用户"),
     USER_OLD_PWD_INCONSISTENT(HttpServletResponse.SC_BAD_REQUEST, "旧密码不一致"),
+    USER_NEW_OLD_PWD_CONSISTENT(HttpServletResponse.SC_BAD_REQUEST, "新旧密码不能一致"),
     USER_IS_DELETE(HttpServletResponse.SC_BAD_REQUEST, "账号已被删除请联系管理员");
 
 
