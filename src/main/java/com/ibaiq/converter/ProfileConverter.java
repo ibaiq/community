@@ -1,5 +1,6 @@
 package com.ibaiq.converter;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.ibaiq.entity.User;
 import com.ibaiq.entity.vo.ProfileVo;
 import org.mapstruct.Mapper;
@@ -36,10 +37,10 @@ public interface ProfileConverter {
     }
 
     default Boolean getIsSysAdmin(Boolean isSysAdmin) {
-        if (!isSysAdmin) {
+        if (ObjectUtil.isNull(isSysAdmin) || !isSysAdmin) {
             return null;
         }
-        return isSysAdmin;
+        return true;
     }
 
 }

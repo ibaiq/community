@@ -19,6 +19,8 @@ public class ProfileVo implements Serializable {
     @Serial
     private static final long serialVersionUID = -2009302429731125427L;
 
+    private Integer id;
+
     private String nickname;
 
     private String username;

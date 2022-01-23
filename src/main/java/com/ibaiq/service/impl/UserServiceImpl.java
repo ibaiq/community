@@ -227,7 +227,7 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
         String token = request.getHeader(ibaiq.getTokenHeader()).replace(ibaiq.getPrefix(), "");
         String username = tokenUtils.getUsername(token);
         Integer id = tokenUtils.getId(token);
-        if (!username.equals(user.getUsername())) {
+        if (!id.equals(user.getId()) || !username.equals(user.getUsername())) {
             throw new BaseException(MessageEnum.USER_ILLEGAL_OPERATION);
         }
         userMapper.updateById(infoModify(user, false));
