@@ -1,5 +1,6 @@
 package com.ibaiq.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ibaiq.common.constants.Constants;
@@ -53,7 +54,7 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
         if (user == null) {
             throw new UserNotExistException(MessageEnum.USER_NOT_EXIST);
         }
-        return user;
+        return common.setRoleIdsAndRoles(user);
     }
 
     @Override
@@ -122,6 +123,9 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
             if (StringUtils.isNotNull(res) && !user.getId().equals(res.getId())) {
                 throw new BaseException(MessageEnum.USER_IS_EXIST);
             }
+        }
+        if (ObjectUtil.isEmpty(user.getNickname())) {
+            user.setNickname(null);
         }
         userMapper.updateById(user);
         async.user_updateCache(user.getId());
@@ -227,6 +231,9 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
         Integer id = tokenUtils.getId(token);
         if (!id.equals(user.getId()) || !username.equals(user.getUsername())) {
             throw new BaseException(MessageEnum.USER_ILLEGAL_OPERATION);
+        }
+        if (ObjectUtil.isEmpty(user.getNickname())) {
+            user.setNickname(null);
         }
         userMapper.updateById(infoModify(user, false));
         async.user_updateCache(user.getId());
