@@ -76,12 +76,12 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
         LambdaQueryWrapper<User> query = new LambdaQueryWrapper<>();
         Page<User> page = new Page<>(Long.parseLong(pageNum), Long.parseLong(pageSize));
 
-        query.like(StringUtils.isNotEmpty(user.getUsername()), User::getUsername, user.getUsername());
-        query.eq(StringUtils.isNotEmpty(user.getSex()), User::getSex, user.getSex());
-        query.eq(StringUtils.isNotNull(user.getStatus()), User::getStatus, user.getStatus());
-        query.like(StringUtils.isNotEmpty(user.getNickname()), User::getNickname, user.getNickname());
-        query.ge(StringUtils.isNotNull(user.getBeginTime()), User::getCreated, user.getBeginTime());
-        query.le(StringUtils.isNotNull(user.getEndTime()), User::getCreated, user.getEndTime());
+        query.like(StringUtils.isNotEmpty(user.getUsername()), User::getUsername, user.getUsername())
+                          .eq(StringUtils.isNotEmpty(user.getSex()), User::getSex, user.getSex())
+                          .eq(StringUtils.isNotNull(user.getStatus()), User::getStatus, user.getStatus())
+                          .like(StringUtils.isNotEmpty(user.getNickname()), User::getNickname, user.getNickname())
+                          .ge(StringUtils.isNotNull(user.getBeginTime()), User::getCreated, user.getBeginTime())
+                          .le(StringUtils.isNotNull(user.getEndTime()), User::getCreated, user.getEndTime());
 
         if (isDelete) {
             query.eq(User::getDeleted, 1);
