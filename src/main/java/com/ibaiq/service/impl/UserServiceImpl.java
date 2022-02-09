@@ -204,6 +204,9 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
 
     @Override
     public void resetPwd(User user) {
+        if (user.isSysAdmin()) {
+            throw new BaseException(MessageEnum.USER_IS_ADMIN);
+        }
         user.setPassword(MD5Utils.getMD5(user.getPassword()));
         user.setUsername(null);
         user.setUpdated(new Date());

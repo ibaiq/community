@@ -202,6 +202,7 @@ public class UserController extends BaseController {
     @PreAuthorize("hasAuthority('sys:user:resetPwd')")
     @Log(module = "用户管理", businessType = BusinessType.UPDATE)
     public Message resetPwd(@RequestBody User user) {
+        user.setPassword(sysConfigService.getKeyValue("sys.user.initPwd"));
         userService.resetPwd(user);
         return Message.success();
     }
