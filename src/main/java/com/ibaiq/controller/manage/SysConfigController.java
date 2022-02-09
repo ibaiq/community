@@ -28,7 +28,7 @@ public class SysConfigController extends BaseController {
     }
 
     @GetMapping("/value/{key}")
-    @PreAuthorize("hasAuthority('sys:config:query')")
+    // @PreAuthorize("hasAuthority('sys:config:query')")
     public Message getConfigValue(@PathVariable String key) {
         return Message.success(sysConfigService.getKeyValue(key));
     }
