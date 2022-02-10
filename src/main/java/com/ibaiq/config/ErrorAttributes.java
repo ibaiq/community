@@ -1,5 +1,6 @@
 package com.ibaiq.config;
 
+import com.ibaiq.utils.I18nUtils;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
@@ -26,9 +27,9 @@ public class ErrorAttributes extends DefaultErrorAttributes {
 
         message.put("code", code);
         if (msg.toString().length() > 100) {
-            message.put("msg", "服务器开小差了~");
+            message.put("msg", I18nUtils.getMessage("other.error_message.server_error"));
         } else {
-            message.put("msg", "No message available".equals(msg) ? "服务器开小差了~" : msg);
+            message.put("msg", "No message available".equals(msg) ? I18nUtils.getMessage("other.error_message.server_error") : msg);
         }
         message.put("data", null);
 

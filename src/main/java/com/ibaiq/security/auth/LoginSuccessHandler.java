@@ -8,6 +8,7 @@ import com.ibaiq.entity.User;
 import com.ibaiq.entity.UserOnline;
 import com.ibaiq.manager.AsyncManager;
 import com.ibaiq.manager.factory.AsyncFactory;
+import com.ibaiq.utils.I18nUtils;
 import com.ibaiq.utils.TokenUtils;
 import com.ibaiq.utils.ip.IpUtils;
 import lombok.SneakyThrows;
@@ -64,12 +65,12 @@ public class LoginSuccessHandler extends JsonAuthentication implements Authentic
         user.setPassword(null);
         online.setUser(user);
         online.setToken(token);
-        AsyncManager.me().execute(AsyncFactory.asyncLoginLog(principal.getUsername(), Constants.LOGIN_SUCCESS, Constants.LOGIN_SUCCESS_MSG, uuid, online, latch));
+        AsyncManager.me().execute(AsyncFactory.asyncLoginLog(principal.getUsername(), Constants.LOGIN_SUCCESS, I18nUtils.getMessage(Constants.LOGIN_SUCCESS_MSG), uuid, online, latch));
 
         map.put("token", token);
         // 将JSON返回给前端
         latch.await();
-        writerJson(request, response, Message.success(HttpServletResponse.SC_OK, "登录成功", map));
+        writerJson(request, response, Message.success(HttpServletResponse.SC_OK, I18nUtils.getMessage(Constants.LOGIN_SUCCESS_MSG), map));
     }
 
 }

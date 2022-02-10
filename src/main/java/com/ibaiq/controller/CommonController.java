@@ -4,6 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSONObject;
 import com.ibaiq.entity.Message;
+import com.ibaiq.utils.I18nUtils;
 import com.ibaiq.utils.ip.IpUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,7 @@ public class CommonController extends BaseController {
      */
     @RequestMapping
     public String index() {
-        return "欢迎使用Ibaiq社区系统，请通过前端地址访问";
+        return I18nUtils.getMessage("index.message.welcome");
     }
 
     /**
@@ -46,7 +47,6 @@ public class CommonController extends BaseController {
     @SneakyThrows
     @GetMapping("/sentence")
     public Message sentence() {
-        // var body = HttpRequest.get("https://sentence.iciba.com/index.php?c=dailysentence&m=getdetail&title=" + LocalDate.now())
         var body = HttpRequest.get("https://api.xygeng.cn/one")
                           .execute().body();
         var note = JSONObject.parseObject(body).getJSONObject("data").get("content");

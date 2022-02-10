@@ -2,6 +2,7 @@ package com.ibaiq.entity;
 
 import com.ibaiq.common.enums.MessageEnum;
 import com.ibaiq.exception.BaseException;
+import com.ibaiq.utils.I18nUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serial;
@@ -43,7 +44,7 @@ public class Message implements Serializable {
 
 
     public static Message success() {
-        return new Message(HttpServletResponse.SC_OK, "成功");
+        return new Message(HttpServletResponse.SC_OK, I18nUtils.getMessage("response.success_message"));
     }
 
     public static Message success(Integer code, String msg, Object data) {
@@ -59,7 +60,7 @@ public class Message implements Serializable {
     }
 
     public static Message success(Object data) {
-        return new Message(HttpServletResponse.SC_OK, "成功", data);
+        return new Message(HttpServletResponse.SC_OK, I18nUtils.getMessage("response.success_message"), data);
     }
 
     public static Message success(Integer code, String msg) {
@@ -79,7 +80,7 @@ public class Message implements Serializable {
     }
 
     public static Message error() {
-        return error(HttpServletResponse.SC_BAD_REQUEST, "错误");
+        return error(HttpServletResponse.SC_BAD_REQUEST, I18nUtils.getMessage("response.error_message"));
     }
 
     public Integer getCode() {

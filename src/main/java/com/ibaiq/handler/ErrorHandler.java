@@ -3,6 +3,7 @@ package com.ibaiq.handler;
 import com.ibaiq.common.enums.MessageEnum;
 import com.ibaiq.entity.Message;
 import com.ibaiq.exception.*;
+import com.ibaiq.utils.I18nUtils;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -64,12 +65,12 @@ public class ErrorHandler implements Serializable {
     @ExceptionHandler(NumberFormatException.class)
     public Message isNumber(HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return Message.error(HttpServletResponse.SC_BAD_REQUEST, "参数类型错误");
+        return Message.error(HttpServletResponse.SC_BAD_REQUEST, I18nUtils.getMessage("other.error_message.param_type"));
     }
 
     @ExceptionHandler(MultipartException.class)
     public Message fileIsNull() {
-        return Message.error(HttpServletResponse.SC_BAD_REQUEST, "请选择文件");
+        return Message.error(HttpServletResponse.SC_BAD_REQUEST, I18nUtils.getMessage("other.error_message.file_is_null"));
     }
 
     @ExceptionHandler(BaseException.class)

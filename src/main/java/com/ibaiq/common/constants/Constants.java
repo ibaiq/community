@@ -48,7 +48,7 @@ public interface Constants {
 
     // 登录成功
     boolean LOGIN_SUCCESS = true;
-    String LOGIN_SUCCESS_MSG = "登录成功";
+    String LOGIN_SUCCESS_MSG = "login.success_message";
 
     // 注销成功
     boolean LOGOUT_SUCCESS = true;

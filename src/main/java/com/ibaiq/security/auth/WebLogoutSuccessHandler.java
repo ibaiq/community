@@ -6,6 +6,7 @@ import com.ibaiq.entity.Message;
 import com.ibaiq.manager.AsyncManager;
 import com.ibaiq.manager.factory.AsyncFactory;
 import com.ibaiq.service.async.AsyncService;
+import com.ibaiq.utils.I18nUtils;
 import com.ibaiq.utils.TokenUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class WebLogoutSuccessHandler extends JsonAuthentication implements Logou
             async.token_addBlacklist(claims.get("uuid", String.class));
             AsyncManager.me().execute(AsyncFactory.asyncLoginLog(username, Constants.LOGOUT_SUCCESS, Constants.LOGOUT_SUCCESS_MSG, null, null, null));
         } finally {
-            writerJson(request, response, Message.success("注销成功"));
+            writerJson(request, response, Message.success(I18nUtils.getMessage("logout.success_message")));
         }
     }
 

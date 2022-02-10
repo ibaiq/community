@@ -1,5 +1,6 @@
 package com.ibaiq.security.auth;
 
+import com.ibaiq.common.enums.MessageEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -24,7 +25,7 @@ public class WebAuthenticationEntryPoint implements AuthenticationEntryPoint {
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, request.getAttribute("msg") == null ? "请先登录" : request.getAttribute("msg").toString());
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, request.getAttribute("msg") == null ? MessageEnum.NOT_LOGIN.getMsg() : request.getAttribute("msg").toString());
     }
 
 }
