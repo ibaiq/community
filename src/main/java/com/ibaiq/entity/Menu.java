@@ -52,6 +52,12 @@ public class Menu extends BaseEntity implements Serializable {
 
     private Boolean visible;
 
+    // @TableField("title_en_US")
+    // private String titleEnUs;
+
+    // @TableField("title_zh_TW")
+    // private String titleZhTw;
+
     @TableField(exist = false)
     private List<Menu> children = new ArrayList<>();
 

@@ -165,6 +165,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
             router.setHidden(menu.getVisible());
             router.setPath(getRouterPath(menu));
             router.setComponent(getComponent(menu));
+            // router.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getTitleEnUs(), menu.getTitleZhTw()));
             router.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath()));
             List<Menu> children = menu.getChildren();
             if (children != null && !children.isEmpty() && UserConstants.TYPE_DIR.equals(menu.getType())) {
@@ -177,6 +178,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
                 child.setPath(getRouterPath(menu));
                 child.setComponent(getComponent(menu));
                 child.setName(getRouterName(menu));
+                // child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getTitleEnUs(), menu.getTitleZhTw()));
                 child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath()));
                 childrenList.add(child);
                 router.setChildren(childrenList);
@@ -189,6 +191,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
                 child.setPath(routerPath);
                 child.setComponent(UserConstants.INNER_LINK);
                 child.setName(StringUtils.capitalize(routerPath));
+                // child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getTitleEnUs(), menu.getTitleZhTw()));
                 child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath()));
                 childrenList.add(child);
                 router.setChildren(childrenList);

@@ -35,4 +35,8 @@ public class MetaVo implements Serializable {
      */
     private String link;
 
+    // private String en_US;
+
+    // private String zh_TW;
+
 }
