@@ -106,4 +106,9 @@ public interface UserService {
      */
     void changePwd(String oldPwd, String newPwd, HttpServletRequest request);
 
+    /**
+     * 获取用户数量
+     */
+    Long getUserCount();
+
 }

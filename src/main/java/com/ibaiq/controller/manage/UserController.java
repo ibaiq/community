@@ -47,6 +47,14 @@ public class UserController extends BaseController {
     }
 
     /**
+     * 获取本站用户数量
+     */
+    @GetMapping("/getCount")
+    public Message getCount() {
+        return Message.success(MapUtil.builder().put("count", userService.getUserCount()).map());
+    }
+
+    /**
      * 获取分页数据
      *
      * @param pageNum  页码

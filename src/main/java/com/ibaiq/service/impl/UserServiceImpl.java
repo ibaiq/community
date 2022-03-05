@@ -157,7 +157,7 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
                 if (menuIds.size() > 0) {
                     // 获取该用户下的有权限的菜单
                     List<Menu> menus = menuMapper.selectBatchIds(menuIds);
-                    String menuPerms = menus.stream().map(Menu::getPerms).collect(Collectors.joining(","));
+                    String menuPerms = menus.stream().map(Menu::getPerms).filter(ObjectUtil::isNotEmpty).collect(Collectors.joining(","));
                     authority = authority.concat(",").concat(menuPerms);
                 }
                 // 异步更新在线用户的缓存信息
@@ -259,6 +259,11 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
         }
         user.setPassword(newPwd);
         userMapper.updateById(infoModify(user, true));
+    }
+
+    @Override
+    public Long getUserCount() {
+        return userMapper.selectCount(null);
     }
 
     @Override
