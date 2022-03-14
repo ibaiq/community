@@ -281,9 +281,9 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
         }
         LambdaQueryWrapper<User> query = new LambdaQueryWrapper<>();
         if (contain) {
-            query.in(User::getId, userIds);
+            query.in(User::getId, ObjectUtil.isEmpty(userIds) ? new Object[]{-1} : userIds.toArray());
         } else {
-            query.notIn(User::getId, userIds);
+            query.notIn(User::getId, ObjectUtil.isEmpty(userIds) ? new Object[]{-1} : userIds.toArray());
         }
         query.like(StringUtils.isNotEmpty(user.getUsername()), User::getUsername, user.getUsername());
         query.orderByAsc(User::getId);
