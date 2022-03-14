@@ -6,6 +6,7 @@ import com.ibaiq.common.enums.MessageEnum;
 import com.ibaiq.config.IbaiqConfig;
 import com.ibaiq.entity.UserOnline;
 import com.ibaiq.exception.BaseException;
+import com.ibaiq.exception.TokenException;
 import com.ibaiq.service.UserService;
 import com.ibaiq.utils.RedisUtils;
 import com.ibaiq.utils.TokenUtils;
@@ -91,6 +92,8 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
                 } else {
                     throw new BaseException(MessageEnum.TOKEN_EXCEPTION);
                 }
+            } else {
+                throw new TokenException(MessageEnum.LOGIN_EXPIRED);
             }
         } catch (ExpiredJwtException e) {
             // 将token异常消息放到域中，给未认证调用
