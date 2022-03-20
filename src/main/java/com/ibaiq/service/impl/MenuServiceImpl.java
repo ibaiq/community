@@ -59,7 +59,8 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
                           .like(StringUtils.isNotEmpty(menu.getTitle()), Menu::getTitle, menu.getTitle())
                           // .eq(!SecurityUtils.getUser().getUser().isSysAdmin(), Menu::getDeleted, 0)
                           .eq(Menu::getDeleted, 0)
-                          .eq(StringUtils.isNotNull(menu.getStatus()), Menu::getStatus, menu.getStatus());
+                          .eq(StringUtils.isNotNull(menu.getStatus()), Menu::getStatus, menu.getStatus())
+                          .orderByAsc(Menu::getSortNum);
 
         List<Menu> menus = menuMapper.selectList(query);
         return getAllMenu(menus);

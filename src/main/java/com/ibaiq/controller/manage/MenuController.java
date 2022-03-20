@@ -25,7 +25,7 @@ public class MenuController extends BaseController {
      * 根据菜单编号获取菜单信息
      */
     @GetMapping({"/", "/{menuId}"})
-    @PreAuthorize("hasAuthority('sys:menu:query')")
+    @PreAuthorize("@permission.hasPermits('sys:menu:query')")
     public Message findById(@PathVariable Integer menuId) {
         return Message.success(menuService.findById(menuId));
     }
@@ -43,7 +43,7 @@ public class MenuController extends BaseController {
      * 获取菜单列表
      */
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('sys:menu:list')")
+    @PreAuthorize("@permission.hasPermits('sys:menu:list')")
     public Message list(Menu menu) {
         return Message.success(menuService.getAll(menu));
     }
@@ -52,7 +52,7 @@ public class MenuController extends BaseController {
      * 获取父子关系菜单
      */
     @GetMapping("/nav")
-    @PreAuthorize("hasAuthority('sys:menu:list')")
+    @PreAuthorize("@permission.hasPermits('sys:menu:list')")
     public Message nav() {
         return Message.success(menuService.getCurrentUserNav());
     }
@@ -61,7 +61,7 @@ public class MenuController extends BaseController {
      * 添加菜单
      */
     @PostMapping
-    @PreAuthorize("hasAuthority('sys:menu:save')")
+    @PreAuthorize("@permission.hasPermits('sys:menu:save')")
     @Log(module = "菜单管理", businessType = BusinessType.INSERT)
     public Message addMenu(@RequestBody Menu menu) {
         menu.setCreated(new Date());
@@ -73,7 +73,7 @@ public class MenuController extends BaseController {
      * 修改菜单信息
      */
     @PutMapping
-    @PreAuthorize("hasAuthority('sys:menu:modify')")
+    @PreAuthorize("@permission.hasPermits('sys:menu:modify')")
     @Log(module = "菜单管理", businessType = BusinessType.UPDATE)
     public Message modify(@RequestBody Menu menu) {
         menu.setPerms(null);
@@ -85,7 +85,7 @@ public class MenuController extends BaseController {
      * 删除菜单以及路由
      */
     @DeleteMapping("/{menuId}")
-    @PreAuthorize("hasAuthority('sys:menu:delete')")
+    @PreAuthorize("@permission.hasPermits('sys:menu:delete')")
     @Log(module = "菜单管理", businessType = BusinessType.DELETE)
     public Message delete(@PathVariable Integer menuId) {
         menuService.deleteById(menuId);
@@ -96,7 +96,7 @@ public class MenuController extends BaseController {
      * 获取已删除的菜单
      */
     @GetMapping("/delMenu")
-    @PreAuthorize("hasAuthority('sys:menu:del:list')")
+    @PreAuthorize("@permission.hasPermits('sys:menu:del:list')")
     public Message getDelete() {
         return Message.success(menuService.getDeleted());
     }
@@ -105,7 +105,7 @@ public class MenuController extends BaseController {
      * 恢复删除的菜单
      */
     @PostMapping("/recover/{menuId}")
-    @PreAuthorize("hasAuthority('sys:menu:del:recov')")
+    @PreAuthorize("@permission.hasPermits('sys:menu:del:recov')")
     @Log(module = "菜单管理", businessType = BusinessType.UPDATE)
     public Message recover(@PathVariable Integer menuId) {
         menuService.recover(menuId);

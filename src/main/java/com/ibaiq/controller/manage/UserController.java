@@ -40,7 +40,7 @@ public class UserController extends BaseController {
      * 根据用户编号获取详细信息
      */
     @GetMapping({"/", "/{userId}"})
-    @PreAuthorize("hasAuthority('sys:user:query')")
+    @PreAuthorize("@permission.hasPermits('sys:user:query')")
     public Message find(@PathVariable(required = false) Integer userId) {
         UserVo userVo = userConverter.po2Vo(userService.findById(userId));
         return Message.success(userVo);
@@ -61,7 +61,7 @@ public class UserController extends BaseController {
      * @param pageSize 数量
      */
     @GetMapping("/pagination")
-    @PreAuthorize("hasAuthority('sys:user:list')")
+    @PreAuthorize("@permission.hasPermits('sys:user:list')")
     public Message getAll(@RequestParam(defaultValue = "1") String pageNum, @RequestParam(defaultValue = "10") String pageSize, User user) {
         return Message.success(userService.getAll(pageNum, pageSize, user, false));
     }
@@ -70,7 +70,7 @@ public class UserController extends BaseController {
      * 获取一删除的分页数据
      */
     @GetMapping("/getDelUser")
-    @PreAuthorize("hasAuthority('sys:user:del:list')")
+    @PreAuthorize("@permission.hasPermits('sys:user:del:list')")
     public Message getDelUser(@RequestParam(defaultValue = "1") String pageNum, @RequestParam(defaultValue = "5") String pageSize, User user) {
         return Message.success(userService.getAll(pageNum, pageSize, user, true));
     }
@@ -81,7 +81,7 @@ public class UserController extends BaseController {
      * @param user 用户信息
      */
     @PostMapping
-    @PreAuthorize("hasAuthority('sys:user:save')")
+    @PreAuthorize("@permission.hasPermits('sys:user:save')")
     @Log(module = "用户管理", businessType = BusinessType.INSERT)
     public Message add(@RequestBody UserAddRequest user) {
         User po = userConverter.request2Po(user);
@@ -94,7 +94,7 @@ public class UserController extends BaseController {
      * 批量或者删除一个用户
      */
     @DeleteMapping
-    @PreAuthorize("hasAuthority('sys:user:delete')")
+    @PreAuthorize("@permission.hasPermits('sys:user:delete')")
     @Log(module = "用户管理", businessType = BusinessType.DELETE)
     public Message delete(@RequestBody List<Integer> userIds) {
         userService.delOrRestById(userIds, true);
@@ -105,7 +105,7 @@ public class UserController extends BaseController {
      * 批量或恢复一个删除的用户
      */
     @PostMapping("/recover")
-    @PreAuthorize("hasAuthority('sys:user:delete')")
+    @PreAuthorize("@permission.hasPermits('sys:user:delete')")
     @Log(module = "用户管理", businessType = BusinessType.UPDATE)
     public Message recoverDel(@RequestBody List<Integer> userIds) {
         userService.delOrRestById(userIds, false);
@@ -116,7 +116,7 @@ public class UserController extends BaseController {
      * 修改用户信息
      */
     @PutMapping
-    @PreAuthorize("hasAuthority('sys:user:modify')")
+    @PreAuthorize("@permission.hasPermits('sys:user:modify')")
     @Log(module = "用户管理", businessType = BusinessType.UPDATE)
     public Message modify(@RequestBody UserUpdateRequest user) {
         if (StringUtils.isNotEmpty(user.getPassword())) {
@@ -134,7 +134,7 @@ public class UserController extends BaseController {
      * @param status true正常，false禁用
      */
     @PutMapping("/{userId}/{status}")
-    @PreAuthorize("hasAuthority('sys:user:modify')")
+    @PreAuthorize("@permission.hasPermits('sys:user:modify')")
     @Log(module = "用户管理", businessType = BusinessType.UPDATE)
     public Message modifyStatus(@PathVariable Integer userId, @PathVariable Boolean status) {
         User user = new User();
@@ -149,7 +149,7 @@ public class UserController extends BaseController {
      * 修改用户头像
      */
     @PutMapping("/upAvatar/{userId}")
-    @PreAuthorize("hasAuthority('sys:user:modify')")
+    @PreAuthorize("@permission.hasPermits('sys:user:modify')")
     @Log(module = "用户管理", businessType = BusinessType.UPDATE)
     public Message modifyAvatar(@PathVariable Integer userId, MultipartFile file) {
         String url = uploadService.uploadImage(file, ibaiq.getAvatar(), request);
@@ -161,7 +161,7 @@ public class UserController extends BaseController {
      * 授权角色
      */
     @PutMapping({"/authorize", "/authorize/{userId}"})
-    @PreAuthorize("hasAuthority('sys:user:auth:role')")
+    @PreAuthorize("@permission.hasPermits('sys:user:auth:role')")
     @Log(module = "用户管理", businessType = BusinessType.GRANT)
     public Message assignRole(@PathVariable Integer userId, @RequestBody List<Integer> roleIds) {
         if (ObjectUtil.isNull(userId) || ObjectUtil.isEmpty(roleIds)) {
@@ -192,7 +192,7 @@ public class UserController extends BaseController {
      * 获取用户授权的角色
      */
     @GetMapping({"/authorize", "/authorize/{userId}"})
-    @PreAuthorize("hasAuthority('sys:user:auth:role')")
+    @PreAuthorize("@permission.hasPermits('sys:user:auth:role')")
     public Message getUserAuthRole(@PathVariable Integer userId) {
         if (StringUtils.isNull(userId)) {
             throw new ParamIsNullException(MessageEnum.PARAM_IS_NULL);
@@ -207,7 +207,7 @@ public class UserController extends BaseController {
      * 重置密码
      */
     @PutMapping("/resetPwd")
-    @PreAuthorize("hasAuthority('sys:user:resetPwd')")
+    @PreAuthorize("@permission.hasPermits('sys:user:resetPwd')")
     @Log(module = "用户管理", businessType = BusinessType.UPDATE)
     public Message resetPwd(@RequestBody User user) {
         user.setPassword(sysConfigService.getKeyValue("sys.user.initPwd"));

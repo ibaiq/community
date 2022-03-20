@@ -24,7 +24,7 @@ public class OperLogController extends BaseController {
      * 获取分页日志
      */
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('sys:log:operate')")
+    @PreAuthorize("@permission.hasPermits('sys:log:operate')")
     public Message list(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, OperLog operations) {
         return Message.success(operLogService.list(pageNum, pageSize, operations));
     }
@@ -33,7 +33,7 @@ public class OperLogController extends BaseController {
      * 删除日志
      */
     @DeleteMapping
-    @PreAuthorize("hasAuthority('sys:log:operate:delete')")
+    @PreAuthorize("@permission.hasPermits('sys:log:operate:delete')")
     @Log(module = "日志管理", businessType = BusinessType.DELETE)
     public Message delete(@RequestBody List<Integer> ids) {
         operLogService.deleteById(ids);
@@ -44,7 +44,7 @@ public class OperLogController extends BaseController {
      * 清空日志
      */
     @DeleteMapping("/clear")
-    @PreAuthorize("hasAuthority('sys:log:operate:clear')")
+    @PreAuthorize("@permission.hasPermits('sys:log:operate:clear')")
     public Message clear() {
         operLogService.clear();
         return Message.success();

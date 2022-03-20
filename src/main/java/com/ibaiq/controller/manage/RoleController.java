@@ -27,7 +27,7 @@ public class RoleController extends BaseController {
      * 获取指定编号角色信息
      */
     @GetMapping({"/", "/{roleId}"})
-    @PreAuthorize("hasAuthority('sys:role:query')")
+    @PreAuthorize("@permission.hasPermits('sys:role:query')")
     public Message info(@PathVariable(required = false) Integer roleId) {
         return Message.success(roleService.findById(roleId));
     }
@@ -36,7 +36,7 @@ public class RoleController extends BaseController {
      * 获取全部角色
      */
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('sys:role:list')")
+    @PreAuthorize("@permission.hasPermits('sys:role:list')")
     public Message list() {
         return Message.success(roleService.getAll());
     }
@@ -45,7 +45,7 @@ public class RoleController extends BaseController {
      * 获取角色信息分页数据
      */
     @GetMapping("/pagination")
-    @PreAuthorize("hasAuthority('sys:role:list')")
+    @PreAuthorize("@permission.hasPermits('sys:role:list')")
     public Message pagination(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, Role role) {
         return Message.success(roleService.getPagination(pageNum, pageSize, role));
     }
@@ -54,7 +54,7 @@ public class RoleController extends BaseController {
      * 获取未授权用户的角色
      */
     @GetMapping("/authorize/unallocatedList")
-    @PreAuthorize("hasAuthority('sys:role:unauth:user:role')")
+    @PreAuthorize("@permission.hasPermits('sys:role:unauth:user:role')")
     public Message unallocatedList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         return Message.success(roleService.getUnallocatedList(pageNum, pageSize));
     }
@@ -63,7 +63,7 @@ public class RoleController extends BaseController {
      * 获取角色授权的用户
      */
     @GetMapping({"/authorize/authorizeList", "/authorize/authorizeList/{roleId}"})
-    @PreAuthorize("hasAuthority('sys:role:auth:user')")
+    @PreAuthorize("@permission.hasPermits('sys:role:auth:user')")
     public Message getAuthorizeList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
                                     @PathVariable(required = false) Integer roleId, User user) {
         return Message.success(userService.getAuthorizeList(pageNum, pageSize, roleId, user));
@@ -73,7 +73,7 @@ public class RoleController extends BaseController {
      * 获取角色未授权的用户
      */
     @GetMapping({"/authorize/unAuthorizeList", "/authorize/unAuthorizeList/{roleId}"})
-    @PreAuthorize("hasAuthority('sys:role:unauth:user')")
+    @PreAuthorize("@permission.hasPermits('sys:role:unauth:user')")
     public Message getUnAuthorizeList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
                                       @PathVariable(required = false) Integer roleId, User user) {
         return Message.success(userService.getUnAuthorizeList(pageNum, pageSize, roleId, user));
@@ -85,7 +85,7 @@ public class RoleController extends BaseController {
      * @param id 角色id
      */
     @GetMapping("/menuIdList/{id}")
-    @PreAuthorize("hasAuthority('sys:role:query:menu')")
+    @PreAuthorize("@permission.hasPermits('sys:role:query:menu')")
     public Message getMenuIdByRoleId(@PathVariable Integer id) {
         return Message.success(roleService.getMenuIdsByIds(id));
     }
@@ -94,7 +94,7 @@ public class RoleController extends BaseController {
      * 添加角色信息
      */
     @PostMapping
-    @PreAuthorize("hasAuthority('sys:role:save')")
+    @PreAuthorize("@permission.hasPermits('sys:role:save')")
     @Log(module = "角色管理", businessType = BusinessType.INSERT)
     public Message add(@RequestBody Role role) {
         roleService.add(role);
@@ -107,7 +107,7 @@ public class RoleController extends BaseController {
      * @param role 信息
      */
     @PutMapping
-    @PreAuthorize("hasAuthority('sys:role:modify')")
+    @PreAuthorize("@permission.hasPermits('sys:role:modify')")
     @Log(module = "角色管理", businessType = BusinessType.UPDATE)
     public Message modify(@RequestBody Role role) {
         roleService.modify(role);
@@ -120,7 +120,7 @@ public class RoleController extends BaseController {
      * @param roleId 角色id
      */
     @DeleteMapping
-    @PreAuthorize("hasAuthority('sys:role:delete')")
+    @PreAuthorize("@permission.hasPermits('sys:role:delete')")
     @Log(module = "角色管理", businessType = BusinessType.DELETE)
     public Message delete(@RequestBody List<Integer> roleId) {
         roleService.deleteById(roleId);
@@ -131,7 +131,7 @@ public class RoleController extends BaseController {
      * 批量选择授权用户
      */
     @PutMapping({"/authorize/select/", "/authorize/select/{roleId}"})
-    @PreAuthorize("hasAuthority('sys:role:auth:user')")
+    @PreAuthorize("@permission.hasPermits('sys:role:auth:user')")
     @Log(module = "角色管理", businessType = BusinessType.GRANT)
     public Message selectAuthorize(@PathVariable Integer roleId, @RequestBody List<Integer> userIds) {
         roleUserService.selectAuthorize(roleId, userIds);
@@ -142,7 +142,7 @@ public class RoleController extends BaseController {
      * 批量取消授权用户
      */
     @PutMapping({"/authorize/cancel/", "/authorize/cancel/{roleId}"})
-    @PreAuthorize("hasAuthority('sys:role:auth:user')")
+    @PreAuthorize("@permission.hasPermits('sys:role:auth:user')")
     @Log(module = "角色管理", businessType = BusinessType.CANCEL)
     public Message cancelAuthorize(@PathVariable Integer roleId, @RequestBody List<Integer> userIds) {
         roleUserService.cancelAuthorize(roleId, userIds);
@@ -153,7 +153,7 @@ public class RoleController extends BaseController {
      * 选择菜单
      */
     @PutMapping("/selectMenu/{roleId}")
-    @PreAuthorize("hasAuthority('sys:role:auth:menu')")
+    @PreAuthorize("@permission.hasPermits('sys:role:auth:menu')")
     @Log(module = "角色管理", businessType = BusinessType.GRANT)
     public Message selectMenu(@PathVariable Integer roleId, @RequestBody List<Integer> menuIds) {
         roleMenuService.selectMenu(roleId, menuIds);

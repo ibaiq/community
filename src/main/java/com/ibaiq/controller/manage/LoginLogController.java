@@ -21,13 +21,13 @@ import java.util.List;
 public class LoginLogController extends BaseController {
 
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('sys:log:login')")
+    @PreAuthorize("@permission.hasPermits('sys:log:login')")
     public Message list(@RequestParam(defaultValue = "1") String pageNum, @RequestParam(defaultValue = "10") String pageSize, LoginLog loginLog) {
         return Message.success(logService.getAll(pageNum, pageSize, loginLog));
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAuthority('sys:log:delete')")
+    @PreAuthorize("@permission.hasPermits('sys:log:delete')")
     @Log(module = "登录日志", businessType = BusinessType.DELETE)
     public Message remove(@RequestBody List<Integer> ids) {
         logService.delete(ids);
@@ -35,7 +35,7 @@ public class LoginLogController extends BaseController {
     }
 
     @DeleteMapping("/clear")
-    @PreAuthorize("hasAuthority('sys:log:clear')")
+    @PreAuthorize("@permission.hasPermits('sys:log:clear')")
     @Log(module = "角色管理", businessType = BusinessType.CLEAN)
     public Message clear() {
         logService.clear();

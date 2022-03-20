@@ -28,7 +28,7 @@ import java.util.List;
 public class OnlineController extends BaseController {
 
     @GetMapping("/list")
-    @PreAuthorize("hasAuthority('sys:online:list')")
+    @PreAuthorize("@permission.hasPermits('sys:online:list')")
     public Message list(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
                         String ip, String username) {
         Collection<String> keys = redis.keys(Constants.REDIS_PREFIX_TOKEN + "*");
@@ -57,7 +57,7 @@ public class OnlineController extends BaseController {
     }
 
     @DeleteMapping("/{uuid}")
-    @PreAuthorize("hasAuthority('sys:online:force')")
+    @PreAuthorize("@permission.hasPermits('sys:online:force')")
     @Log(module = "在线用户", businessType = BusinessType.FORCE)
     public Message forceLogout(@PathVariable String uuid) {
         AsyncService async = SpringUtils.getBean(AsyncService.class);
