@@ -7,6 +7,7 @@ import com.ibaiq.common.enums.MessageEnum;
 import com.ibaiq.config.IbaiqConfig;
 import com.ibaiq.service.RoleService;
 import com.ibaiq.utils.RedisUtils;
+import com.ibaiq.utils.spring.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDecisionManager;
@@ -42,6 +43,9 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
      */
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
+        if (SecurityUtils.getUser().getUser().isSysAdmin()) {
+            return;
+        }
         // 获取实例
         FilterInvocation filterInvocation = (FilterInvocation) o;
         // 获取请求地址
