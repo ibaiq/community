@@ -43,9 +43,6 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
      */
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-        if (SecurityUtils.getUser().getUser().isSysAdmin()) {
-            return;
-        }
         // 获取实例
         FilterInvocation filterInvocation = (FilterInvocation) o;
         // 获取请求地址
@@ -59,6 +56,9 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
 
         // 请求地址是否是后台api
         if (url.contains(Constants.MANAGE)) {
+            if (SecurityUtils.getUser().getUser().isSysAdmin()) {
+                return;
+            }
             // 获取动态权限标识
             List<String> list = redis.get(Constants.REDIS_KEY_SECURITY_ROLES, List.class);
             if (ObjectUtil.isEmpty(list)) {
