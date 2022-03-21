@@ -1,5 +1,6 @@
 package com.ibaiq.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.ibaiq.common.enums.MessageEnum;
 import com.ibaiq.entity.RoleMenu;
 import com.ibaiq.exception.ParamIsNullException;
@@ -34,20 +35,21 @@ public class RoleMenuServiceImpl extends BaseService<RoleMenuMapper, RoleMenu> i
 
     @Override
     public void selectMenu(Integer roleId, List<Integer> menuIds) {
-        if (roleId == null || menuIds == null || menuIds.isEmpty()) {
+        if (roleId == null) {
             throw new ParamIsNullException(MessageEnum.PARAM_IS_NULL);
         }
         query.clear();
         this.remove(query.eq(RoleMenu::getRoleId, roleId));
-        List<RoleMenu> roleMenus = new ArrayList<>();
-        menuIds.forEach(item -> {
-            RoleMenu roleMenu = new RoleMenu();
-            roleMenu.setRoleId(roleId);
-            roleMenu.setMenuId(item);
-            roleMenus.add(roleMenu);
-        });
-
-        this.saveBatch(roleMenus);
+        if (ObjectUtil.isNotEmpty(menuIds)) {
+            List<RoleMenu> roleMenus = new ArrayList<>();
+            menuIds.forEach(item -> {
+                RoleMenu roleMenu = new RoleMenu();
+                roleMenu.setRoleId(roleId);
+                roleMenu.setMenuId(item);
+                roleMenus.add(roleMenu);
+            });
+            this.saveBatch(roleMenus);
+        }
     }
 
 }
