@@ -37,17 +37,24 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
 
     @Override
     public List<Menu> getCurrentUserNav() {
-        query.clear();
+        LambdaQueryWrapper<Menu> query = new LambdaQueryWrapper<>();
         User user = SecurityUtils.getUser().getUser();
 
-        List<Integer> roleIds = roleUserMapper.selectRoleIdList(user.getId());
-        List<Integer> menuIds = roleMenuMapper.selectMenuIdsByRoleIds(roleIds);
-        List<Menu> menus = menuMapper.selectList(query.in(Menu::getId, menuIds)
-                          .eq(Menu::getDeleted, 0)
-                          .eq(Menu::getStatus, true)
-                          .ne(Menu::getType, UserConstants.TYPE_BUTTON)
-                          .orderByAsc(Menu::getSortNum));
-
+        List<Menu> menus;
+        if (user.isSysAdmin()) {
+            menus = menuMapper.selectList(query.eq(Menu::getDeleted, 0)
+                              .eq(Menu::getStatus, true)
+                              .ne(Menu::getType, UserConstants.TYPE_BUTTON)
+                              .orderByAsc(Menu::getSortNum));
+        } else {
+            List<Integer> roleIds = roleUserMapper.selectRoleIdList(user.getId());
+            List<Integer> menuIds = roleMenuMapper.selectMenuIdsByRoleIds(roleIds);
+            menus = menuMapper.selectList(query.in(Menu::getId, menuIds)
+                              .eq(Menu::getDeleted, 0)
+                              .eq(Menu::getStatus, true)
+                              .ne(Menu::getType, UserConstants.TYPE_BUTTON)
+                              .orderByAsc(Menu::getSortNum));
+        }
         return getAllMenu(menus);
     }
 
