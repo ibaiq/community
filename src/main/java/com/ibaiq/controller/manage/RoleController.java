@@ -160,4 +160,13 @@ public class RoleController extends BaseController {
         return Message.success();
     }
 
+    /**
+     * 获取对应角色菜单列表树
+     */
+    @GetMapping("/menuTreeList/{roleId}")
+    @PreAuthorize("@permission.hasPermits('sys:role:auth:menu')")
+    public Message roleMenuTreeSelect(@PathVariable Integer roleId) {
+        return Message.success(menuService.getMenuTreeListIds(roleId));
+    }
+
 }

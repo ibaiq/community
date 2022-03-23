@@ -17,4 +17,12 @@
         FROM menu ${ew.customSqlSegment}
     </select>
 
+    <select id="selectParentIdsByMenuIds" resultType="Integer">
+        SELECT parent_id FROM menu where id IN (-1
+        <foreach collection="menuIds" item="item" index="index" open="," separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
 </mapper>

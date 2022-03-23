@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ibaiq.entity.Menu;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -21,5 +22,13 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @return 菜单集合
      */
     List<Menu> getAll(Wrapper<Menu> ew);
+
+    /**
+     * 根据菜单id查询菜单对父id
+     *
+     * @param menuIds id集合
+     * @return id集合
+     */
+    List<Integer> selectParentIdsByMenuIds(HashSet<Integer> menuIds);
 
 }

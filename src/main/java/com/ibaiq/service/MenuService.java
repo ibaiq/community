@@ -3,6 +3,7 @@ package com.ibaiq.service;
 import com.ibaiq.entity.Menu;
 import com.ibaiq.entity.vo.RouterVo;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -69,5 +70,7 @@ public interface MenuService {
      * 恢复删除的菜单
      */
     void recover(Integer menuId);
+
+    HashSet<Integer> getMenuTreeListIds(Integer roleId);
 
 }

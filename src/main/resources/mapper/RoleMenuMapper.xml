@@ -12,4 +12,18 @@
         )
     </select>
 
+    <select id="selectMenuIdsByRoleId" resultType="Integer">
+        SELECT menu_id
+        FROM role_menu
+        WHERE role_id = #{roleId}
+    </select>
+
+    <select id="selectMenuIdsNotInParentIds" resultType="Integer">
+        SELECT menu_id FROM role_menu WHERE role_id = #{roleId} AND menu_id NOT IN (-1
+        <foreach collection="menuIds" item="item" index="index" open="," separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
 </mapper>

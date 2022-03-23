@@ -20,9 +20,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
@@ -223,6 +221,15 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
         update.clear();
 
         menuMapper.update(null, update.eq(Menu::getId, menuId).set(Menu::getDeleted, 0));
+    }
+
+    @Override
+    public HashSet<Integer> getMenuTreeListIds(Integer roleId) {
+        HashSet<Integer> menuIds = roleMenuMapper.selectMenuIdsByRoleId(roleId);
+        List<Integer> menuParentIds = menuMapper.selectParentIdsByMenuIds(menuIds);
+        menuIds = roleMenuMapper.selectMenuIdsNotInParentIds(roleId, menuParentIds);
+
+        return menuIds;
     }
 
 
