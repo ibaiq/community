@@ -1,6 +1,7 @@
 package com.ibaiq.service.impl;
 
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ibaiq.common.constants.Constants;
 import com.ibaiq.common.constants.UserConstants;
@@ -99,6 +100,21 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
             if (selectCount > 0) {
                 menu.setName(UUID.nameUUIDFromBytes(menu.getName().getBytes()).toString());
             }
+        } else if (menu.getType().equals(UserConstants.TYPE_MENU) && ObjectUtil.isNotNull(menu.getParentId()) && menu.getParentId() != 0) {
+            query.clear();
+            query.eq(Menu::getParentId, menu.getParentId());
+            Menu res = menuMapper.selectOne(query);
+            if (ObjectUtil.isNotNull(res)) {
+                if (res.getType().equals(UserConstants.TYPE_DIR)) {
+                    menu.setName(StringUtils.capitalize(res.getPath()) + "-" + (ObjectUtil.isNotEmpty(menu.getPath()) ? menu.getPath() : "index"));
+                } else {
+                    menu.setName(UUID.nameUUIDFromBytes(menu.getName().getBytes()).toString());
+                }
+            } else {
+                menu.setName(UUID.nameUUIDFromBytes(menu.getName().getBytes()).toString());
+            }
+        } else {
+            menu.setName(UUID.nameUUIDFromBytes(menu.getName().getBytes()).toString());
         }
         menuMapper.insert(menu);
     }
