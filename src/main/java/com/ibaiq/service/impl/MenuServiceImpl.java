@@ -197,7 +197,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
                 router.setMeta(null);
                 List<RouterVo> childrenList = new ArrayList<>();
                 RouterVo child = new RouterVo();
-                child.setPath(getRouterPath(menu));
+                child.setPath(menu.getPath());
                 child.setComponent(getComponent(menu));
                 child.setName(getRouterName(menu));
                 // child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getTitleEnUs(), menu.getTitleZhTw()));
@@ -351,7 +351,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
      * @return 结果
      */
     private boolean isMenuFrame(Menu menu) {
-        return menu.getParentId() == 0 && UserConstants.TYPE_MENU.equals(menu.getType());
+        return menu.getParentId() == 0 && UserConstants.TYPE_MENU.equals(menu.getType()) && !menu.getIsFrame();
     }
 
     /**
@@ -361,7 +361,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
      * @return 结果
      */
     private boolean isInnerLink(Menu menu) {
-        return StringUtils.ishttp(menu.getPath());
+        return !menu.getIsFrame() && StringUtils.ishttp(menu.getPath());
     }
 
     /**
