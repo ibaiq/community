@@ -52,6 +52,11 @@ public class Menu extends BaseEntity implements Serializable {
 
     private Boolean visible;
 
+    /**
+     * 是否为外链
+     */
+    private Boolean isFrame;
+
     // @TableField("title_en_US")
     // private String titleEnUs;
 
