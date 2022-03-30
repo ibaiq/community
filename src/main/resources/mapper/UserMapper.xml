@@ -7,6 +7,7 @@
     <update id="deleteBatchById" parameterType="java.util.List">
         UPDATE user
         SET deleted = 1
+        ,updated = NOW()
         WHERE deleted = 0 AND id IN (-1
         <foreach collection="ids" item="item" index="index" open="," separator=",">
             #{item}
@@ -17,6 +18,7 @@
     <update id="recoverBatchById" parameterType="java.util.List">
         UPDATE user
         SET deleted = 0
+        ,updated = NOW()
         WHERE deleted = 1
         AND id IN (-1
         <foreach collection="ids" index="index" item="item" open="," separator=",">
