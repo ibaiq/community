@@ -164,7 +164,7 @@ public class UserController extends BaseController {
     @PreAuthorize("@permission.hasPermits('sys:user:auth:role')")
     @Log(module = "用户管理", businessType = BusinessType.GRANT)
     public Message assignRole(@PathVariable Integer userId, @RequestBody List<Integer> roleIds) {
-        if (ObjectUtil.isNull(userId) || ObjectUtil.isEmpty(roleIds)) {
+        if (ObjectUtil.isNull(userId)) {
             throw new ParamIsNullException(MessageEnum.PARAM_IS_NULL);
         }
         if (SecurityUtils.getUser().getUser().isSysAdmin()) {
