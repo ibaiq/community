@@ -184,7 +184,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
         menus.forEach(menu -> {
             RouterVo router = new RouterVo();
             router.setName(getRouterName(menu));
-            router.setHidden(menu.getVisible());
+            router.setHidden(!menu.getVisible());
             router.setPath(getRouterPath(menu));
             router.setComponent(getComponent(menu));
             // router.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getTitleEnUs(), menu.getTitleZhTw()));
