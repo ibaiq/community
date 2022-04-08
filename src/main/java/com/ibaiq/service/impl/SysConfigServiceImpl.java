@@ -1,5 +1,6 @@
 package com.ibaiq.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ibaiq.common.constants.Constants;
@@ -56,8 +57,14 @@ public class SysConfigServiceImpl extends BaseService<SysConfigMapper, SysConfig
 
     @Override
     public SysConfig find(String key) {
-        // return sysConfigMapper.selectOne(query.eq(SysConfig::getConfigKey, key));
-        return redis.get(Constants.REDIS_PREFIX_CONFIG + key, SysConfig.class);
+        query.clear();
+        SysConfig sysConfig = redis.get(Constants.REDIS_PREFIX_CONFIG + key, SysConfig.class);
+        if (ObjectUtil.isNotNull(sysConfig)) {
+            return sysConfig;
+        }
+        sysConfig = sysConfigMapper.selectOne(query.eq(SysConfig::getConfigKey, key));
+        redis.set(Constants.REDIS_PREFIX_CONFIG + key, sysConfig);
+        return sysConfig;
     }
 
     @Override
