@@ -62,20 +62,26 @@ public class RoleController extends BaseController {
     /**
      * 获取角色授权的用户
      */
-    @GetMapping({"/authorize/authorizeList", "/authorize/authorizeList/{roleId}"})
+    @GetMapping({"/authorize/authorizeList", "/authorize/authorizeList/{roleId}", "/authorize/authorizeList/{roleId}/{isPaginated}"})
     @PreAuthorize("@permission.hasPermits('sys:role:auth:user')")
     public Message getAuthorizeList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
-                                    @PathVariable(required = false) Integer roleId, User user) {
+                                    @PathVariable(required = false) Integer roleId, @PathVariable(required = false) boolean isPaginated, User user) {
+        if (!isPaginated) {
+            return Message.success(userService.getAuthorizeList(pageNum, Integer.MAX_VALUE, roleId, user));
+        }
         return Message.success(userService.getAuthorizeList(pageNum, pageSize, roleId, user));
     }
 
     /**
      * 获取角色未授权的用户
      */
-    @GetMapping({"/authorize/unAuthorizeList", "/authorize/unAuthorizeList/{roleId}"})
+    @GetMapping({"/authorize/unAuthorizeList", "/authorize/unAuthorizeList/{roleId}", "/authorize/unAuthorizeList/{roleId}/{isPaginated}"})
     @PreAuthorize("@permission.hasPermits('sys:role:unauth:user')")
     public Message getUnAuthorizeList(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
-                                      @PathVariable(required = false) Integer roleId, User user) {
+                                      @PathVariable(required = false) Integer roleId, @PathVariable(required = false) boolean isPaginated, User user) {
+        if (!isPaginated) {
+            return Message.success(userService.getUnAuthorizeList(pageNum, Integer.MAX_VALUE, roleId, user));
+        }
         return Message.success(userService.getUnAuthorizeList(pageNum, pageSize, roleId, user));
     }
 
