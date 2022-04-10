@@ -11,10 +11,10 @@
                 AND ip = #{log.ip}
             </if>
             <if test="log.username != null and log.username != ''">
-                AND ip = #{log.username}
+                AND username = #{log.username}
             </if>
             <if test="log.status != null">
-                AND ip = #{log.status}
+                AND status = #{log.status}
             </if>
             <if test="log.beginTime != null">
                 AND login_time &gt;= #{log.beginTime}

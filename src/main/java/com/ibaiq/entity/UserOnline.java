@@ -8,8 +8,6 @@ import java.util.Date;
 
 /**
  * 当前在线会话
- *
- * @author ruoyi
  */
 @Data
 public class UserOnline {
