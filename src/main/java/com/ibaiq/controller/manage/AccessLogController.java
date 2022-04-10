@@ -1,10 +1,12 @@
 package com.ibaiq.controller.manage;
 
+import cn.hutool.core.date.DateUtil;
 import com.ibaiq.common.constants.Constants;
 import com.ibaiq.controller.BaseController;
 import com.ibaiq.entity.AccessLog;
 import com.ibaiq.entity.Message;
 import com.ibaiq.utils.PageUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(Constants.MANAGE + "/access")
+@Slf4j
 public class AccessLogController extends BaseController {
 
     /**
@@ -21,7 +24,7 @@ public class AccessLogController extends BaseController {
     public Message getAllAccessLogs(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize) {
         var list = redis.listGet(Constants.REDIS_KEY_ACCESS_LOG, 0, -1)
                           .stream().map(o -> (AccessLog) o)
-                          .sorted((o1, o2) -> (int) (o2.getTime().getTime() - o1.getTime().getTime()))
+                          .sorted((o1, o2) -> DateUtil.compare(o2.getTime(), o1.getTime()))
                           .toList();
         return Message.success(PageUtils.startPage(list, pageNum, pageSize));
     }
