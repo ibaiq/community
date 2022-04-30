@@ -3,15 +3,15 @@ package com.ibaiq.utils;
 import com.ibaiq.common.constants.Constants;
 import com.ibaiq.config.IbaiqConfig;
 import com.ibaiq.entity.SysConfig;
+import com.ibaiq.entity.UserOnline;
+import com.ibaiq.utils.ip.AddressUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * token工具类
@@ -47,6 +47,50 @@ public class TokenUtils {
                           .setExpiration(instance.getTime())
                           .signWith(SignatureAlgorithm.HS256, ibaiq.getSecret())
                           .compact();
+    }
+
+    /**
+     * 刷新token
+     *
+     * @return token
+     */
+    public String refreshToken(Claims claims, UserOnline online, String ip) {
+        var instance = Calendar.getInstance();
+        var refresh = claims.get("refresh", Integer.class);
+        refresh = Optional.ofNullable(refresh).orElse(0);
+        int day;
+        switch (refresh) {
+            case 0:
+                day = 1;
+                break;
+            case 1:
+                day = 3;
+                break;
+            case 2:
+                day = 7;
+                break;
+            default:
+                day = 15;
+                break;
+        }
+        instance.add(Calendar.DATE, day);
+        var uuid = UUID.randomUUID().toString();
+        claims.replace("uuid", uuid);
+        claims.put("refresh", refresh++);
+        var token = Jwts.builder()
+                          .setClaims(claims)
+                          .setIssuedAt(new Date())
+                          .setExpiration(instance.getTime())
+                          .signWith(SignatureAlgorithm.HS256, ibaiq.getSecret())
+                          .compact();
+
+        redis.del(Constants.REDIS_PREFIX_TOKEN + claims.get("uuid", String.class));
+        online.setUuid(uuid);
+        online.setIp(ip);
+        online.setToken(token);
+        online.setLoginLocation(AddressUtils.getCityInfo(ip));
+        redis.set(Constants.REDIS_PREFIX_TOKEN + uuid, online, (day * 60 * 60 * 24));
+        return token;
     }
 
     /**

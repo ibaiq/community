@@ -15,7 +15,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Calendar;
 
 /**
  * Token认证过滤器
@@ -36,7 +36,6 @@ import java.io.IOException;
  * @author 十三
  */
 @SuppressWarnings("ALL")
-@Slf4j
 public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
 
     @Autowired
@@ -78,7 +77,8 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
                 // 取出登录信息
                 UserOnline online = redis.get(Constants.REDIS_PREFIX_TOKEN + uuid, UserOnline.class);
                 // 判断缓存中token的IP、用户状态、是否被删除
-                if (ip.equals(online.getIp()) && online.getUser().getStatus() && online.getUser().getDeleted().equals(0)) {
+                // if (ip.equals(online.getIp()) && online.getUser().getStatus() && online.getUser().getDeleted().equals(0)) {
+                if (online.getUser().getStatus() && online.getUser().getDeleted().equals(0)) {
                     String authority = "";
                     // 判断缓存中有没有权限缓存
                     if (redis.hasKey(Constants.REDIS_PREFIX_AUTHORITY + claims.get("username", String.class))) {
@@ -86,6 +86,19 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
                     } else {
                         // redis缓存中没有的话重新获取
                         authority = userService.getUserAuthorityInfo(online.getUser());
+                    }
+                    // token签发时间
+                    var issuedAt = claims.getIssuedAt().getTime();
+                    // 当前时间
+                    var currentTimeMillis = System.currentTimeMillis();
+                    // token过期时间
+                    var expirationTime = claims.getExpiration().getTime();
+                    // token过期时间在30分钟以内刷新token并返回
+                    var instance = Calendar.getInstance();
+                    instance.add(Calendar.MINUTE, 30);
+                    var time = instance.getTimeInMillis();
+                    if ((expirationTime - currentTimeMillis) <= (time - currentTimeMillis)) {
+                        response.setHeader("refreshtoken", tokenUtils.refreshToken(claims, online, ip));
                     }
                     // 验证结果返回
                     return new UsernamePasswordAuthenticationToken(online, null, AuthorityUtils.commaSeparatedStringToAuthorityList(authority));
