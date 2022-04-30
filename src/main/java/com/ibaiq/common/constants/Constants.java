@@ -8,7 +8,7 @@ package com.ibaiq.common.constants;
 public interface Constants {
 
     // 登录过期时间
-    long LOGIN_EXPIRED = 60 * 60 * 24;
+    int LOGIN_EXPIRED = 60 * 60 * 24;
 
     String REDIS_PREFIX_LOGIN_EXPIRED = Constants.REDIS_PREFIX_CONFIG + "sys.login.expired";
 
