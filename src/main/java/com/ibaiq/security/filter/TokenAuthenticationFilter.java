@@ -76,8 +76,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
             if (redis.hasKey(Constants.REDIS_PREFIX_TOKEN + uuid)) {
                 // 取出登录信息
                 UserOnline online = redis.get(Constants.REDIS_PREFIX_TOKEN + uuid, UserOnline.class);
-                // 判断缓存中token的IP、用户状态、是否被删除
-                // if (ip.equals(online.getIp()) && online.getUser().getStatus() && online.getUser().getDeleted().equals(0)) {
+                // 判断缓存中token的用户状态、是否被删除
                 if (online.getUser().getStatus() && online.getUser().getDeleted().equals(0)) {
                     String authority = "";
                     // 判断缓存中有没有权限缓存
