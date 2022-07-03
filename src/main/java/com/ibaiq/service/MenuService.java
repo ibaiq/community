@@ -25,7 +25,7 @@ public interface MenuService {
      *
      * @return 菜单集合
      */
-    List<Menu> getAll(Menu menu);
+    List<Menu> getAll(Menu menu, boolean isDelete);
 
     /**
      * 获取一个菜单信息

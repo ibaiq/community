@@ -21,7 +21,10 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
@@ -54,22 +57,23 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
                               .ne(Menu::getType, UserConstants.TYPE_BUTTON)
                               .orderByAsc(Menu::getSortNum));
         }
-        return getAllMenu(menus);
+        return getAllMenu(menus, false);
     }
 
     @Override
-    public List<Menu> getAll(Menu menu) {
+    public List<Menu> getAll(Menu menu, boolean isDelete) {
         LambdaQueryWrapper<Menu> query = new LambdaQueryWrapper<>();
 
         query.like(StringUtils.isNotEmpty(menu.getPerms()), Menu::getPerms, menu.getPerms())
                           .like(StringUtils.isNotEmpty(menu.getTitle()), Menu::getTitle, menu.getTitle())
-                          // .eq(!SecurityUtils.getUser().getUser().isSysAdmin(), Menu::getDeleted, 0)
-                          .eq(Menu::getDeleted, 0)
+                          .like(StringUtils.isNotEmpty(menu.getPath()), Menu::getPath, menu.getPath())
+                          .eq(ObjectUtil.isNotNull(menu.getType()), Menu::getType, menu.getType())
+                          .eq(Menu::getDeleted, isDelete ? 1 : 0)
                           .eq(StringUtils.isNotNull(menu.getStatus()), Menu::getStatus, menu.getStatus())
                           .orderByAsc(Menu::getSortNum);
 
         List<Menu> menus = menuMapper.selectList(query);
-        return getAllMenu(menus);
+        return getAllMenu(menus, true);
     }
 
     @Override
@@ -249,14 +253,18 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
     }
 
 
-    private List<Menu> getAllMenu(List<Menu> menus) {
+    private List<Menu> getAllMenu(List<Menu> menus, boolean isMenuList) {
         List<Menu> list = new ArrayList<>();
 
-        menus.forEach(menu -> {
-            if (menu.getParentId() == 0) {
-                list.add(menu);
-            }
-        });
+        if (isMenuList) {
+            list.addAll(menus);
+        } else {
+            menus.forEach(menu -> {
+                if (menu.getParentId() == 0) {
+                    list.add(menu);
+                }
+            });
+        }
 
         list.forEach(menu -> menu.setChildren(getChild(menu.getId(), menus)));
 

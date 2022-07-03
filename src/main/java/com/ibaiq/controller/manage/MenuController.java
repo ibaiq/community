@@ -45,7 +45,12 @@ public class MenuController extends BaseController {
     @GetMapping("/list")
     @PreAuthorize("@permission.hasPermits('sys:menu:list')")
     public Message list(Menu menu) {
-        return Message.success(menuService.getAll(menu));
+        return Message.success(menuService.getAll(menu, false));
+    }
+
+    @GetMapping("/delList")
+    public Message getDelList(Menu menu) {
+        return Message.success(menuService.getAll(menu, true));
     }
 
     /**
