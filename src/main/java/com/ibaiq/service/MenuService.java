@@ -25,7 +25,7 @@ public interface MenuService {
      *
      * @return 菜单集合
      */
-    List<Menu> getAll(Menu menu, boolean isDelete);
+    List<Menu> getAll(Menu menu);
 
     /**
      * 获取一个菜单信息
@@ -64,7 +64,7 @@ public interface MenuService {
     /**
      * 获取已删除的菜单列表
      */
-    List<Menu> getDeleted();
+    List<Menu> getDeleted(Menu menu);
 
     /**
      * 恢复删除的菜单

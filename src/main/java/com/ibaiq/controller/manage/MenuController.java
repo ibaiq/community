@@ -45,12 +45,13 @@ public class MenuController extends BaseController {
     @GetMapping("/list")
     @PreAuthorize("@permission.hasPermits('sys:menu:list')")
     public Message list(Menu menu) {
-        return Message.success(menuService.getAll(menu, false));
+        return Message.success(menuService.getAll(menu));
     }
 
     @GetMapping("/delList")
+    @PreAuthorize("@permission.hasPermits('sys:menu:del:list')")
     public Message getDelList(Menu menu) {
-        return Message.success(menuService.getAll(menu, true));
+        return Message.success(menuService.getDeleted(menu));
     }
 
     /**
@@ -95,15 +96,6 @@ public class MenuController extends BaseController {
     public Message delete(@PathVariable Integer menuId) {
         menuService.deleteById(menuId);
         return Message.success();
-    }
-
-    /**
-     * 获取已删除的菜单
-     */
-    @GetMapping("/delMenu")
-    @PreAuthorize("@permission.hasPermits('sys:menu:del:list')")
-    public Message getDelete() {
-        return Message.success(menuService.getDeleted());
     }
 
     /**

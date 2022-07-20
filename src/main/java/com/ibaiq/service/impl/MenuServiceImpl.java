@@ -61,19 +61,24 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public List<Menu> getAll(Menu menu, boolean isDelete) {
+    public List<Menu> getAll(Menu menu) {
         LambdaQueryWrapper<Menu> query = new LambdaQueryWrapper<>();
-
         query.like(StringUtils.isNotEmpty(menu.getPerms()), Menu::getPerms, menu.getPerms())
                           .like(StringUtils.isNotEmpty(menu.getTitle()), Menu::getTitle, menu.getTitle())
                           .like(StringUtils.isNotEmpty(menu.getPath()), Menu::getPath, menu.getPath())
                           .eq(ObjectUtil.isNotNull(menu.getType()), Menu::getType, menu.getType())
-                          .eq(Menu::getDeleted, isDelete ? 1 : 0)
                           .eq(StringUtils.isNotNull(menu.getStatus()), Menu::getStatus, menu.getStatus())
                           .orderByAsc(Menu::getSortNum);
 
+        String targetSql = query.getTargetSql();
+
+        query.eq(Menu::getDeleted, 0);
         List<Menu> menus = menuMapper.selectList(query);
-        return getAllMenu(menus, true);
+
+        if (targetSql.contains("(")) {
+            return getAllMenu(menus, true);
+        }
+        return getAllMenu(menus, false);
     }
 
     @Override
@@ -228,9 +233,15 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
     }
 
     @Override
-    public List<Menu> getDeleted() {
+    public List<Menu> getDeleted(Menu menu) {
         query.clear();
-        return menuMapper.selectList(query.eq(Menu::getDeleted, 1));
+        query.like(StringUtils.isNotEmpty(menu.getTitle()), Menu::getTitle, menu.getTitle())
+                          .like(StringUtils.isNotEmpty(menu.getPath()), Menu::getPath, menu.getPath())
+                          .eq(ObjectUtil.isNotNull(menu.getType()), Menu::getType, menu.getType())
+                          .eq(Menu::getDeleted, 1)
+                          .orderByAsc(Menu::getSortNum);
+
+        return menuMapper.selectList(query);
     }
 
     @Override
