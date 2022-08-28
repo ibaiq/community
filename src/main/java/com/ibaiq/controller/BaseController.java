@@ -64,6 +64,12 @@ public abstract class BaseController {
     @Autowired
     protected AccessLogService accessLogService;
 
+    @Autowired
+    protected DictTypeService dictTypeService;
+
+    @Autowired
+    protected DictDataService dictDataService;
+
 
     protected HttpServletRequest request;
 

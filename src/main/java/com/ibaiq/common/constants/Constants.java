@@ -38,6 +38,9 @@ public interface Constants {
     // 前端访问日志key
     String REDIS_KEY_ACCESS_LOG = "Access-Log";
 
+    // 字典管理 cache key
+    public static final String REDIS_PREFIX_DICT_KEY = "Sys-Dict:";
+
     // http请求
     String HTTP = "http://";
 

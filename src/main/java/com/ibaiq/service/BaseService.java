@@ -75,6 +75,12 @@ public abstract class BaseService<M extends BaseMapper<T>, T> extends ServiceImp
     protected AccessLogMapper accessLogMapper;
 
     @Autowired
+    protected DictTypeMapper dictTypeMapper;
+
+    @Autowired
+    protected DictDataMapper dictDataMapper;
+
+    @Autowired
     protected TokenUtils tokenUtils;
 
     @Autowired
