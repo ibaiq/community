@@ -31,6 +31,7 @@ public enum MessageEnum {
     MENU_NOT_EXISTS(HttpServletResponse.SC_BAD_REQUEST, I18nUtils.getMessage("menu.error_message.not_exists")),
     MENU_EXISTS(HttpServletResponse.SC_BAD_REQUEST, I18nUtils.getMessage("menu.error_message.exists")),
     MENU_IS_SYSTEM_ROUTER(HttpServletResponse.SC_BAD_REQUEST, "menu.error_message.is_system_menu"),
+    MENU_ICON_IS_NULL(HttpServletResponse.SC_BAD_REQUEST, "menu.error_message.icon_is_null"),
 
     // 角色实体参数请求异常
     ROLE_ID_IS_NULL(HttpServletResponse.SC_BAD_REQUEST, I18nUtils.getMessage("role.error_message.id_is_null")),

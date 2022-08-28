@@ -123,7 +123,13 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
                 menu.setName(UUID.nameUUIDFromBytes(menu.getName().getBytes()).toString());
             }
         } else {
-            menu.setName(UUID.nameUUIDFromBytes(menu.getName().getBytes()).toString());
+            menu.setName(UUID.randomUUID().toString());
+        }
+
+        if (UserConstants.TYPE_DIR.equals(menu.getType()) || UserConstants.TYPE_MENU.equals(menu.getType())) {
+            if (StringUtils.isEmpty(menu.getIcon())) {
+                throw new ParamIsNullException(MessageEnum.MENU_ICON_IS_NULL);
+            }
         }
         menuMapper.insert(menu);
     }
@@ -197,7 +203,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
             router.setPath(getRouterPath(menu));
             router.setComponent(getComponent(menu));
             // router.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getTitleEnUs(), menu.getTitleZhTw()));
-            router.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath()));
+            router.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getType()));
             List<Menu> children = menu.getChildren();
             if (children != null && !children.isEmpty() && UserConstants.TYPE_DIR.equals(menu.getType())) {
                 router.setAlwaysShow(true);
@@ -210,7 +216,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
                 child.setComponent(getComponent(menu));
                 child.setName(getRouterName(menu));
                 // child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getTitleEnUs(), menu.getTitleZhTw()));
-                child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath()));
+                child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getType()));
                 childrenList.add(child);
                 router.setChildren(childrenList);
             } else if (menu.getParentId() == 0 && isInnerLink(menu)) {
@@ -223,7 +229,7 @@ public class MenuServiceImpl extends BaseService<MenuMapper, Menu> implements Me
                 child.setComponent(UserConstants.INNER_LINK);
                 child.setName(StringUtils.capitalize(routerPath));
                 // child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getTitleEnUs(), menu.getTitleZhTw()));
-                child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath()));
+                child.setMeta(new MetaVo(menu.getTitle(), menu.getIcon(), menu.getPath(), menu.getType()));
                 childrenList.add(child);
                 router.setChildren(childrenList);
             }

@@ -35,6 +35,11 @@ public class MetaVo implements Serializable {
      */
     private String link;
 
+    /**
+     * 路由属性（0目录，1菜单，2按钮）
+     */
+    private Integer type;
+
     // private String en_US;
 
     // private String zh_TW;
