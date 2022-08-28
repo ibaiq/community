@@ -1,8 +1,8 @@
 spring:
   datasource:
     username: root
-    password: your password
-    # Windows
+    password: 12345678
+    # Mac OS
     url: jdbc:mysql://localhost:3306/wall-bbs?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -21,12 +21,12 @@ spring:
       max-pool-prepared-statement-per-connection-size: 20
 
   redis:
-    # Windows
+    # Mac OS
     host: localhost
     port: 6379
     # 没有就不填
-    password: your password
+    password:
 
 ibaiq:
-  # Windows
-  profile: C:/Dev/profile/
+  # Mac OS
+  profile: /Users/lazy/profile/
