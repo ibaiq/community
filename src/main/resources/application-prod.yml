@@ -1,3 +1,6 @@
+server:
+  port: 80
+
 spring:
   datasource:
     username: ${MYSQL_USERNAME}
@@ -23,8 +26,9 @@ spring:
   redis:
     # Linux
     host: ${REDIS_HOST}
-    port: 6379
+    port: 14723
     # 没有就不填
+    username: ${REDIS_USERNAME}
     password: ${REDIS_PASSWORD}
 
 ibaiq:
