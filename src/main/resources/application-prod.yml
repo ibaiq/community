@@ -26,7 +26,7 @@ spring:
   redis:
     # Linux
     host: ${REDIS_HOST}
-    port: 14723
+    port: ${REDIS_PORT}
     # 没有就不填
     username: ${REDIS_USERNAME}
     password: ${REDIS_PASSWORD}
