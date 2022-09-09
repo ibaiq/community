@@ -30,6 +30,10 @@ spring:
     # 没有就不填
     username: ${REDIS_USERNAME}
     password: ${REDIS_PASSWORD}
+    lettuce:
+      pool:
+        min-idle: 1
+        max-active: 200
 
 ibaiq:
   # Linux
