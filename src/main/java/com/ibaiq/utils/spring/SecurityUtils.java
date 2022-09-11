@@ -25,7 +25,12 @@ public class SecurityUtils {
      * 获取用户信息
      */
     public static UserOnline getUser() {
-        Object principal = getAuthentication().getPrincipal();
+        Object principal = null;
+        try {
+            principal = getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            return new UserOnline();
+        }
         if (principal.getClass().getName().equals(UserOnline.class.getName())) {
             return (UserOnline) principal;
         }
