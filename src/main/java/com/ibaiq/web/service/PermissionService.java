@@ -43,7 +43,7 @@ public class PermissionService {
      * @param permission  权限字符串
      * @return 用户是否具备某权限
      */
-    private boolean hasPermissions(Set<String> permissions, String permission) {
+    public boolean hasPermissions(Set<String> permissions, String permission) {
         return permissions.contains(ALL_PERMISSION) || permissions.contains(StringUtils.trim(permission));
     }
 

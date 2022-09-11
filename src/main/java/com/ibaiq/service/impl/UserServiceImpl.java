@@ -49,7 +49,8 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
             return null;
         }
         User user = userMapper.selectOne(query.eq(User::getId, id)
-                          .eq(!SecurityUtils.getUser().getUser().isAdmin() || SecurityUtils.getUser().getUser().getPermissions().contains("sys:user:del:list"), User::getDeleted, 0)
+                          .eq(!SecurityUtils.getUser().getUser().isAdmin() ||
+                                            !permissionService.hasPermissions(SecurityUtils.getUser().getUser().getPermissions(), "sys:user:del:list"), User::getDeleted, 0)
                           .last("limit 1"));
         if (user == null) {
             throw new UserNotExistException(MessageEnum.USER_NOT_EXIST);

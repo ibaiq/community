@@ -16,6 +16,7 @@ import com.ibaiq.mapper.*;
 import com.ibaiq.service.async.AsyncService;
 import com.ibaiq.utils.RedisUtils;
 import com.ibaiq.utils.TokenUtils;
+import com.ibaiq.web.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
@@ -88,6 +89,9 @@ public abstract class BaseService<M extends BaseMapper<T>, T> extends ServiceImp
 
     @Autowired
     protected UserConverter userConverter;
+
+    @Autowired
+    protected PermissionService permissionService;
 
     /**
      * 泛型的lambda查询构造器
