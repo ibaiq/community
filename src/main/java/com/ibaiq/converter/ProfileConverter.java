@@ -3,6 +3,7 @@ package com.ibaiq.converter;
 import cn.hutool.core.util.ObjectUtil;
 import com.ibaiq.entity.User;
 import com.ibaiq.entity.vo.ProfileVo;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -16,17 +17,16 @@ import java.util.Set;
 public interface ProfileConverter {
 
     @Mappings({
-                      @Mapping(target = "nickname", source = "nickname"),
-                      @Mapping(target = "username", source = "username"),
-                      @Mapping(target = "sex", source = "sex"),
-                      @Mapping(target = "avatar", source = "avatar"),
-                      @Mapping(target = "created", source = "created"),
-                      @Mapping(target = "roles", source = "roles"),
-                      @Mapping(target = "permissions", expression = "java(getPermissions(user))"),
-                      @Mapping(target = "admin", source = "admin"),
-                      @Mapping(target = "isSysAdmin", expression = "java(getIsSysAdmin(user.isSysAdmin()))")
+                      @Mapping(target = "permissions", expression = "java(getPermissions(po))"),
+                      @Mapping(target = "isSysAdmin", expression = "java(getIsSysAdmin(po.isSysAdmin()))")
     })
-    ProfileVo po2Vo(User user);
+    ProfileVo po2Vo(User po);
+
+    /**
+     * 反转
+     */
+    @InheritInverseConfiguration(name = "po2Vo")
+    User vo2Po(ProfileVo vo);
 
     default Set<String> getPermissions(User user) {
         if (user.isAdmin()) {
