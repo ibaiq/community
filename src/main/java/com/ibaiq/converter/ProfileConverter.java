@@ -37,10 +37,7 @@ public interface ProfileConverter {
     }
 
     default Boolean getIsSysAdmin(Boolean isSysAdmin) {
-        if (ObjectUtil.isNull(isSysAdmin) || !isSysAdmin) {
-            return null;
-        }
-        return true;
+        return !ObjectUtil.isNull(isSysAdmin) && isSysAdmin;
     }
 
 }
