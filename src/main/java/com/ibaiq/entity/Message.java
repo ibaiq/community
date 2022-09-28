@@ -1,8 +1,10 @@
 package com.ibaiq.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ibaiq.common.enums.MessageEnum;
 import com.ibaiq.exception.BaseException;
 import com.ibaiq.utils.I18nUtils;
+import lombok.Data;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serial;
@@ -13,6 +15,7 @@ import java.io.Serializable;
  *
  * @author 十三
  */
+@Data
 public class Message implements Serializable {
 
     @Serial
@@ -22,6 +25,7 @@ public class Message implements Serializable {
 
     private String msg;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;
 
 
@@ -81,30 +85,6 @@ public class Message implements Serializable {
 
     public static Message error() {
         return error(HttpServletResponse.SC_BAD_REQUEST, I18nUtils.getMessage("response.error_message"));
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
     }
 
 }
