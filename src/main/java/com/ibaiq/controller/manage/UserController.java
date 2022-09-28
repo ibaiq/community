@@ -19,6 +19,7 @@ import com.ibaiq.utils.encryption.MD5Utils;
 import com.ibaiq.utils.spring.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -83,7 +84,7 @@ public class UserController extends BaseController {
     @PostMapping
     @PreAuthorize("@permission.hasPermits('sys:user:save')")
     @Log(module = "用户管理", businessType = BusinessType.INSERT)
-    public Message add(@RequestBody UserAddRequest user) {
+    public Message add(@Validated @RequestBody UserAddRequest user) {
         User po = userConverter.request2Po(user);
         po.setCreated(new Date());
         userService.add(po);
