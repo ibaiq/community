@@ -4,6 +4,7 @@ import com.ibaiq.common.enums.MessageEnum;
 import com.ibaiq.entity.Message;
 import com.ibaiq.exception.*;
 import com.ibaiq.utils.I18nUtils;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 自定义异常处理器
@@ -50,6 +52,11 @@ public class ErrorHandler implements Serializable {
     //
     //     return "forward:/error";
     // }
+
+    @ExceptionHandler(BindException.class)
+    public Message handleMethodArgumentNotValidException(BindException e) {
+        return Message.error(400, Objects.requireNonNull(e.getFieldError()).getDefaultMessage());
+    }
 
     // @ExceptionHandler(ConstraintViolationException.class)
     // public String returnMsg(ConstraintViolationException e, HttpServletRequest request) {
@@ -90,5 +97,10 @@ public class ErrorHandler implements Serializable {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return Message.error(MessageEnum.PARAM_IS_NULL);
     }
+
+    // @ExceptionHandler(UnexpectedTypeException.class)
+    // public Message custom(UnexpectedTypeException error) {
+    //     return Message.error(400, error.);
+    // }
 
 }
