@@ -90,7 +90,11 @@ public class UserServiceImpl extends BaseService<UserMapper, User> implements Us
             query.eq(User::getDeleted, 0);
         }
 
-        return userMapper.selectPage(page, query);
+        Page<User> userPage = userMapper.selectPage(page, query);
+        List<User> records = userPage.getRecords();
+        // 查询每位用户的角色信息
+        records.forEach(item -> common.setRoleIdsAndRoles(item));
+        return userPage;
     }
 
     @Override
